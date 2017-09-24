@@ -36,7 +36,7 @@ class TicTacToe {
     getWinner() {
         let winnersMap = new Map([
             ['x', false],
-            ['y', false]
+            ['o', false]
         ]);
 
         for (let i = 0; i < this.rate; i++) {
@@ -47,12 +47,12 @@ class TicTacToe {
             }
         }
 
-        if (winnersMap.get('x') && winnersMap.get('y')) {
+        if (winnersMap.get('x') && winnersMap.get('o')) {
             return null;
         } else if (winnersMap.get('x')) {
             return 'x';
-        } else if (winnersMap.get('y')) {
-            return 'y';
+        } else if (winnersMap.get('o')) {
+            return 'o';
         }
 
         return null;
