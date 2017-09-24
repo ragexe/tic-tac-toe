@@ -1,27 +1,30 @@
 class TicTacToe {
     constructor(rate = 3) {
+        this.turns = 0;
+        this.gameIsFinished = false;
         this.rate = rate;
-        this.emptyFields = rate * rate;
         this.battlefield = new Array(this.rate);
         for (let i = 0; i < this.rate; i++) {
             this.battlefield[i] = [];
         }
         this.player = true;
-        this.turns = 0;
-        this.gameIsFinished = false;
+
+        this._players = {
+            first: 'x',
+            second: 'o'
+        }
     }
 
     getCurrentPlayerSymbol() {
-        return this.player ? 'x' : 'o';
+        return this.player ? this._players.first : this._players.second;
     }
 
     nextTurn(rowIndex, columnIndex) {
         if (this.isEmptyField(rowIndex, columnIndex)) {
             this.battlefield[rowIndex][columnIndex] = this.getCurrentPlayerSymbol();
-            this.emptyFields--;
             this.turns++;
             this.player = !this.player;
-            // this.check();
+            this.check();
         }
     }
 
@@ -35,8 +38,8 @@ class TicTacToe {
 
     getWinner() {
         let winnersMap = new Map([
-            ['x', false],
-            ['o', false]
+            [this._players.first, false],
+            [this._players.second, false]
         ]);
 
         for (let i = 0; i < this.rate; i++) {
@@ -47,12 +50,12 @@ class TicTacToe {
             }
         }
 
-        if (winnersMap.get('x') && winnersMap.get('o')) {
+        if (winnersMap.get(this._players.first) && winnersMap.get(this._players.second)) {
             return null;
-        } else if (winnersMap.get('x')) {
-            return 'x';
-        } else if (winnersMap.get('o')) {
-            return 'o';
+        } else if (winnersMap.get(this._players.first)) {
+            return this._players.first;
+        } else if (winnersMap.get(this._players.second)) {
+            return this._players.second;
         }
 
         return null;
@@ -91,7 +94,7 @@ class TicTacToe {
     }
 
     noMoreTurns() {
-        return this.emptyFields < 1;
+        return this.turns === Math.pow(this.rate, 2);
     }
 
     isDraw() {
